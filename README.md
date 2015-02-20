@@ -5,6 +5,8 @@ Simplified Instruction Computer is an architecture created by L. L. Beck for his
 
 This project aims to create a program which takes an SIC object file and returns a corresponding assembly file which is equivalent to it.
 
+Note: This software was created as an assignment/project as part of the System Software course at IIT Roorkee.
+
 Instructions for Compilation
 ----------------------------
 
