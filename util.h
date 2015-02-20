@@ -9,6 +9,8 @@ void usage(std::string progname);
 void error(std::string err);
 void fatal(std::string err, int code = -1);
 
+bool is_hex_digit(char c);
+int hexchar2int(char c);
 int hex2int(std::string s);
 
 #endif
