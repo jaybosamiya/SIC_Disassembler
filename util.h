@@ -1,5 +1,5 @@
-#ifndef MESSAGES_H
-#define MESSAGES_H
+#ifndef UTIL_H
+#define UTIL_H
 
 #include <string>
 
