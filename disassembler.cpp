@@ -53,7 +53,13 @@ bool read_record(ifstream &ifile, string &record) {
 			//TODO
 			break;
 		case 'E': // End
-			//TODO
+			for ( int col = 2 ; col <= 7 ; col++ ) {
+				t = ifile.get();
+				if ( t == EOF ) {
+					fatal("Unexpected end of End Record");
+				}
+				record += t;
+			}
 			break;
 		default:
 			fatal("Unknown record type " + t);
