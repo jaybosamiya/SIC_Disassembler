@@ -45,7 +45,10 @@ string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record
 }
 
 bool read_record(ifstream &ifile, string &record) {
+	int temp_int;
+	string temp_str;
 	char t;
+
 	do {
 		t = ifile.get();
 		if ( t == EOF ) {
@@ -54,12 +57,17 @@ bool read_record(ifstream &ifile, string &record) {
 	} while ( t == '\n' || t == ' ' );
 	record = "";
 	record += t;
+
 	switch (t) {
 		case 'H': // Header
 			record += read_hex_columns(ifile,2,19,'H');
 			break;
 		case 'T': // Text
-			//TODO
+			record += read_hex_columns(ifile,2,7,'T');
+			temp_str = read_hex_columns(ifile,8,9,'T');
+			temp_int = hex2int(temp_str);
+			record += temp_str;
+			record +=  read_hex_columns(ifile,10,9+2*temp_int,'T');
 			break;
 		case 'E': // End
 			record += read_hex_columns(ifile,2,7,'E');
