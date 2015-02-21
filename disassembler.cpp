@@ -393,7 +393,11 @@ void write_assembly(const program &p, ofstream &ofile) {
 				locctr++;
 			} while ( (p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA
 				    || p.byte_type_guess[locctr] == UNINITIALIZED)
-			        && !p.is_labelled[locctr] );
+			        && !p.is_labelled[locctr]
+			        && locctr < end_of_program);
+			if ( locctr >= end_of_program ) {
+				buf_size--;
+			}
 			operand = int2str(buf_size);
 		} else if ( p.byte_type_guess[locctr] == UNINITIALIZED_WORD_DATA ) {
 			opcode = "RESW";
@@ -403,7 +407,11 @@ void write_assembly(const program &p, ofstream &ofile) {
 				locctr+=3;
 			} while ( (p.byte_type_guess[locctr] == UNINITIALIZED_WORD_DATA
 				    || p.byte_type_guess[locctr] == UNINITIALIZED)
-					&& !p.is_labelled[locctr] );
+					&& !p.is_labelled[locctr]
+					&& locctr < end_of_program);
+			if ( locctr >= end_of_program ) {
+				buf_size--;
+			}
 			operand = int2str(buf_size);
 		} else {
 			fatal("Reached part of decompiler that should not be reached");
