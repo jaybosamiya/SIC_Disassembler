@@ -39,6 +39,9 @@ bool find_or_create_label(std::string &label, std::string location) {
 }
 
 void initialize() {
+	symtab.clear();
+	revsymtab.clear();
+	label_count = 0;
 	add_to_symtab("ADD" ,"18");
 	add_to_symtab("AND" ,"40");
 	add_to_symtab("COMP","28");
