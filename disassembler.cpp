@@ -256,5 +256,11 @@ string asm_to_line(string label, string opcode, string operand, bool is_indexed)
 }
 
 void write_assembly(const program &p, ofstream &ofile) {
-	// TODO
+	ofile << asm_to_line(p.name,"START",p.starting_address,false);
+	int start_of_program = hex2int(p.starting_address);
+	int end_of_program = start_of_program + p.length_of_program;
+	for ( int locctr = start_of_program ; locctr < end_of_program ; locctr++ ) {
+		// TODO
+	}
+	ofile << asm_to_line("","END","FIRST",false);
 }
