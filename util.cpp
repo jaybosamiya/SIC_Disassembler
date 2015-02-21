@@ -57,6 +57,7 @@ int hex2int(string s) {
 			fatal("Hex values need to be 0-9 or a-f");
 		}
 	}
+	return ret;
 }
 
 string byte2hex(int c) {
@@ -66,6 +67,7 @@ string byte2hex(int c) {
 	}
 	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
 	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
+	return ret;
 }
 
 string int2hex(int c, int bytes) {
