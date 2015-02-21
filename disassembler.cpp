@@ -384,13 +384,16 @@ void write_assembly(const program &p, ofstream &ofile) {
 					p.memory[locctr+2]
 				);
 			locctr += 3;
-		} else if ( p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA ) {
+		} else if ( p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA ||
+		            p.byte_type_guess[locctr] == UNINITIALIZED ) {
 			opcode = "RESB";
 			int buf_size = 0;
 			do {
 				buf_size++;
 				locctr++;
-			} while ( p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA && !p.is_labelled[locctr] );
+			} while ( (p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA
+				    || p.byte_type_guess[locctr] == UNINITIALIZED)
+			        && !p.is_labelled[locctr] );
 			operand = int2str(buf_size);
 		} else if ( p.byte_type_guess[locctr] == UNINITIALIZED_WORD_DATA ) {
 			opcode = "RESW";
@@ -398,11 +401,12 @@ void write_assembly(const program &p, ofstream &ofile) {
 			do {
 				buf_size++;
 				locctr+=3;
-			} while ( p.byte_type_guess[locctr] == UNINITIALIZED_WORD_DATA && !p.is_labelled[locctr] );
+			} while ( (p.byte_type_guess[locctr] == UNINITIALIZED_WORD_DATA
+				    || p.byte_type_guess[locctr] == UNINITIALIZED)
+					&& !p.is_labelled[locctr] );
 			operand = int2str(buf_size);
 		} else {
-			// TODO
-			locctr++; // temporarily
+			fatal("Reached part of decompiler that should not be reached");
 		}
 		ofile << asm_to_line(label,opcode,operand,is_indexed);
 	}
