@@ -43,8 +43,8 @@ bool is_hex_string(std::string s) {
 
 void make_upper_case(std::string &s) {
 	for ( string::iterator c = s.begin() ; c != s.end() ; c++ ) {
-		if ( *c >= 'A' && *c <= 'Z' ) {
-			*c = (*c - 'A') + 'a';
+		if ( *c >= 'a' && *c <= 'z' ) {
+			*c = (*c - 'a') + 'A';
 		}
 	}
 }
