@@ -291,8 +291,54 @@ void write_assembly(const program &p, ofstream &ofile) {
 	ofile << asm_to_line(p.name,"START",p.starting_address,false);
 	int start_of_program = hex2int(p.starting_address);
 	int end_of_program = start_of_program + p.length_of_program;
-	for ( int locctr = start_of_program ; locctr < end_of_program ; locctr++ ) {
-		// TODO
+	for ( int locctr = start_of_program ; locctr < end_of_program ; ) {
+		if ( p.byte_type_guess[locctr] == CODE ) {
+			string opcode;
+			if ( ! find_from_symtab(opcode,byte2hex(p.memory[locctr])) ) {
+				string errstr;
+				errstr += "Unknown opcode ";
+				errstr += opcode;
+				errstr += " at location ";
+				errstr += int2hex(locctr);
+				fatal(errstr);
+			}
+			string operand = byte2hex(p.memory[locctr+1])+byte2hex(p.memory[locctr+2]);
+			bool is_indexed = (hex2int(operand)&0x8000);
+			operand = int2hex(hex2int(operand)&0x7FFF); // remove index flag
+
+			if ( opcode != "RD" &&
+				 opcode != "TD" &&
+				 opcode != "WD" &&
+				 opcode != "RSUB" ) {
+				if ( !find_from_symtab(operand,operand) ) {
+					string errstr;
+					errstr += "Label not created for operand ";
+					errstr += operand;
+					error(errstr);
+				}
+			}
+
+			if ( opcode == "RSUB" ) {
+				operand = "";
+			}
+
+			string label = "";
+			if ( p.is_labelled[locctr] ) {
+				if ( !find_from_symtab(label,int2hex(locctr)) ) {
+					string errstr;
+					errstr += "Label not created for location ";
+					errstr += int2hex(locctr);
+					error(errstr);
+				}
+			}
+
+			ofile << asm_to_line(label,opcode,operand,is_indexed);
+
+			locctr += 3;
+		} else {
+			// TODO
+			locctr++; // temporarily
+		}
 	}
 	ofile << asm_to_line("","END","FIRST",false);
 }
