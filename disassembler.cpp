@@ -4,7 +4,13 @@
 using namespace std;
 
 enum ByteTypeGuess {
-	UNINITIALIZED, UNKNOWN, CHAR_DATA, WORD_DATA, CODE
+	UNINITIALIZED,
+	UNKNOWN,
+	CHAR_DATA,
+	UNINITIALIZED_CHAR_DATA,
+	WORD_DATA,
+	UNINITIALIZED_WORD_DATA,
+	CODE,
 };
 
 struct program {
@@ -135,11 +141,13 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 		case UNKNOWN:
 			break;
 		case CHAR_DATA:
+		case UNINITIALIZED_CHAR_DATA:
 			{
 				p.byte_type_guess[location] = btg;
 				break;
 			}
 		case WORD_DATA:
+		case UNINITIALIZED_WORD_DATA:
 			{
 				p.byte_type_guess[location+0] = btg;
 				p.byte_type_guess[location+1] = btg;
