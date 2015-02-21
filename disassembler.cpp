@@ -348,7 +348,12 @@ void write_assembly(const program &p, ofstream &ofile) {
 			}
 
 			locctr += 3;
-		} else if ( p.byte_type_guess[locctr] == CHAR_DATA ) {
+		} else if ( p.byte_type_guess[locctr] == CHAR_DATA ||
+					p.byte_type_guess[locctr] == UNKNOWN ) {
+			if ( p.byte_type_guess[locctr] == UNKNOWN ) {
+				label = "UNUSED"; // This should not happen in a well written code
+			}
+
 			vector<char> byte_list;
 			bool type_c = true;
 			do {
