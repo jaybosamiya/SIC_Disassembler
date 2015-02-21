@@ -101,7 +101,13 @@ void record_to_memory(const string record, program &p) {
 			p.length_of_program = hex2int(record.substr(13,6));
 			break;
 		case 'T': // Text
-			//TODO
+			{
+				int text_start = hex2int(record.substr(1,6));
+				int bit_length = hex2int(record.substr(7,2));
+				for ( int i = 0 ; i < bit_length ; i++ ) {
+					p.memory[i+text_start] = hex2int(record.substr(9+2*i,2));
+				}
+			}
 			break;
 		case 'E': // End
 			//TODO
