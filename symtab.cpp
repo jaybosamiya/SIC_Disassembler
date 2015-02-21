@@ -29,13 +29,18 @@ bool find_from_symtab(std::string &symbol, std::string value) {
 	return true;
 }
 
-bool find_or_create_label(std::string &label, std::string location) {
+bool give_label(std::string &label, std::string location) {
 	if ( find_from_symtab(label,location) )
 		return true;
 	label = "label" + label_count;
 	label_count++;
 	add_to_symtab(label,location);
 	return false;
+}
+
+bool give_label(std::string location) {
+	string temp;
+	return give_label(temp,location);
 }
 
 void initialize_symtab() {

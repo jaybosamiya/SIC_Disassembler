@@ -10,6 +10,7 @@ bool find_from_symtab(std::string &symbol, std::string value); // Finds symbol w
 
 bool are_same_in_symtab(std::string symbol, std::string value);
 
+bool give_label(std::string location);
 bool give_label(std::string &label, std::string location);
 // Gives a label to the location, creating a new label if necessary
 // Returns true if label already existed
