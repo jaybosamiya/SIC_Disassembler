@@ -384,6 +384,22 @@ void write_assembly(const program &p, ofstream &ofile) {
 					p.memory[locctr+2]
 				);
 			locctr += 3;
+		} else if ( p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA ) {
+			opcode = "RESB";
+			int buf_size = 0;
+			do {
+				buf_size++;
+				locctr++;
+			} while ( p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA && !p.is_labelled[locctr] );
+			operand = int2str(buf_size);
+		} else if ( p.byte_type_guess[locctr] == UNINITIALIZED_WORD_DATA ) {
+			opcode = "RESW";
+			int buf_size = 0;
+			do {
+				buf_size++;
+				locctr+=3;
+			} while ( p.byte_type_guess[locctr] == UNINITIALIZED_WORD_DATA && !p.is_labelled[locctr] );
+			operand = int2str(buf_size);
 		} else {
 			// TODO
 			locctr++; // temporarily
