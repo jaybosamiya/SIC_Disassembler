@@ -58,3 +58,12 @@ int hex2int(string s) {
 		}
 	}
 }
+
+string byte2hex(int c) {
+	string ret = "";
+	if ( c < 0 || c >= 256 ) {
+		fatal("Illegal value for a byte");
+	}
+	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
+	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
+}
