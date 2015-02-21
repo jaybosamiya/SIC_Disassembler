@@ -240,6 +240,16 @@ void analyze_code_data(program &p) {
 	mark_code_data(p,hex2int(p.first_executable_instruction),CODE);
 }
 
+string asm_to_line(string label, string opcode, string operand) {
+	const int labellength = 8;
+	const int opcodelength = 6;
+	string ret = "";
+	ret += label + string(labellength-label.length(),' ');
+	ret += opcode + string(opcodelength-opcode.length(),' ');
+	ret += operand + '\n';
+	return ret;
+}
+
 void write_assembly(const program &p, ofstream &ofile) {
 	// TODO
 }
