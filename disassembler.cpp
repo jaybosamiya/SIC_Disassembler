@@ -176,6 +176,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				string opcode_val = byte2hex(p.memory[location]);
 				string opcode;
 				string operand = byte2hex(p.memory[location+1])+byte2hex(p.memory[location+2]);
+				operand = int2hex(hex2int(operand)&0x7FFF); // remove index flag
 				if ( ! find_from_symtab(opcode,opcode_val) ) {
 					fatal("Unknown opcode " + opcode_val + " at location " + int2hex(location));
 				}
