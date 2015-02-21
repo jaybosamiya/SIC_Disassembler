@@ -54,6 +54,19 @@ bool disassemble(ifstream &ifile, ofstream &ofile) {
 	status("Done writing output file");
 }
 
+string read_columns(ifstream &ifile, int col_begin, int col_end, char record_type = 'a') { // inclusive of both
+	string ret;
+	char t;
+	for ( int col = col_begin ; col <= col_end ; col++ ) {
+		t = ifile.get();
+		if ( t == EOF ) {
+			fatal("Unexpected end of " + record_type + string(" record"));
+		}
+		ret += t;
+	}
+	return ret;
+}
+
 string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record_type = 'a') { // inclusive of both
 	string ret;
 	char t;
@@ -62,12 +75,17 @@ string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record
 		if ( t == EOF ) {
 			fatal("Unexpected end of " + record_type + string(" record"));
 		} else if ( !is_hex_digit(t) ) {
-			fatal("Unexpected character " + t + string(" in ") + record_type + string(" record"));
+			string errorstr = "Unexpected character ";
+			errorstr += t;
+			errorstr += " in ";
+			errorstr += record_type;
+			errorstr += " record.";
+			fatal(errorstr);
 		}
 		ret += t;
 	}
 	return ret;
-}
+} // TODO: Refactor this to prevent code repetition with read_columns()
 
 bool read_record(ifstream &ifile, string &record) {
 	int temp_int;
@@ -85,7 +103,8 @@ bool read_record(ifstream &ifile, string &record) {
 
 	switch (t) {
 		case 'H': // Header
-			record += read_hex_columns(ifile,2,19,'H');
+			record += read_columns(ifile,2,7,'H');
+			record += read_hex_columns(ifile,8,19,'H');
 			break;
 		case 'T': // Text
 			record += read_hex_columns(ifile,2,7,'T');
