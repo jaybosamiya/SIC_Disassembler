@@ -65,3 +65,11 @@ void initialize() {
 	add_to_symtab("TIX" ,"2C");
 	add_to_symtab("WD"  ,"DC");
 }
+
+bool are_same_in_symtab(std::string symbol, std::string value) {
+	string temp;
+	if ( !read_from_symtab(symbol,temp) ) {
+		return false;
+	}
+	return (value==temp);
+}
