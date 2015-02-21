@@ -13,5 +13,6 @@ bool is_hex_digit(char c);
 int hexchar2int(char c);
 int hex2int(std::string s);
 std::string byte2hex(int c);
+std::string int2hex(int c, bool blankzero = false);
 
 #endif
