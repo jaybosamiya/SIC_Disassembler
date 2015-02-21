@@ -126,6 +126,39 @@ void record_to_memory(const string record, program &p) {
 	}
 }
 
+void mark_code_data(program &p, int location, ByteTypeGuess btg) {
+	if ( location >= hex2int(p.starting_address) + p.length_of_program ) {
+		return;
+	}
+	switch (btg) {
+		case UNINITIALIZED:
+		case UNKNOWN:
+			break;
+		case CHAR_DATA:
+			{
+				p.byte_type_guess[location] = btg;
+				break;
+			}
+		case WORD_DATA:
+			{
+				p.byte_type_guess[location+0] = btg;
+				p.byte_type_guess[location+1] = btg;
+				p.byte_type_guess[location+2] = btg;
+				break;
+			}
+		case CODE:
+			{
+				p.byte_type_guess[location+0] = btg;
+				p.byte_type_guess[location+1] = btg;
+				p.byte_type_guess[location+2] = btg;
+				// TODO: Handle conditional and unconditional jumps here
+				// TODO: Handle data marking here
+				mark_code_data(p,location+3,btg);
+				break;
+			}
+	}
+}
+
 void analyze_code_data(program &p) {
 	if ( p.name.length() == 0 ) {
 		fatal("No Header record");
@@ -133,7 +166,7 @@ void analyze_code_data(program &p) {
 	if ( p.first_executable_instruction.length() == 0 ) {
 		fatal("No End record");
 	}
-	// TODO
+	mark_code_data(p,hex2int(p.first_executable_instruction),CODE);
 }
 
 void write_assembly(const program &p, ofstream &ofile) {
