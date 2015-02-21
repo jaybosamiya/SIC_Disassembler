@@ -1,5 +1,6 @@
 #include "disassembler.h"
 #include "util.h"
+#include "symtab.h"
 
 using namespace std;
 
@@ -183,6 +184,8 @@ void analyze_code_data(program &p) {
 	if ( p.first_executable_instruction.length() == 0 ) {
 		fatal("No End record");
 	}
+	add_to_symtab("FIRST",p.first_executable_instruction);
+	p.is_labelled[hex2int(p.first_executable_instruction)] = true;
 	mark_code_data(p,hex2int(p.first_executable_instruction),CODE);
 }
 
