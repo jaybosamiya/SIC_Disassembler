@@ -166,12 +166,58 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				if ( p.byte_type_guess[location] == UNINITIALIZED ) {
 					fatal("Attempting to use uninitialized section as code");
 				}
+				if ( p.byte_type_guess[location] == CODE ) {
+					break;
+				}
 				p.byte_type_guess[location+0] = btg;
 				p.byte_type_guess[location+1] = btg;
 				p.byte_type_guess[location+2] = btg;
-				// TODO: Handle conditional and unconditional jumps here
-				// TODO: Handle data marking here
-				mark_code_data(p,location+3,btg);
+
+				string opcode_val = byte2hex(p.memory[location]);
+				string opcode;
+				string operand = byte2hex(p.memory[location+1])+byte2hex(p.memory[location+2]);
+				if ( ! find_from_symtab(opcode,opcode_val) ) {
+					fatal("Unknown opcode " + opcode_val + " at location " + int2hex(location));
+				}
+
+				if ( opcode == "ADD"  ||
+					 opcode == "AND"  ||
+					 opcode == "COMP" ||
+					 opcode == "DIV"  ||
+					 opcode == "LDA"  ||
+					 opcode == "LDL"  ||
+					 opcode == "LDX"  ||
+					 opcode == "MUL"  ||
+					 opcode == "OR"   ||
+					 opcode == "STA"  ||
+					 opcode == "STL"  ||
+					 opcode == "STX"  ||
+					 opcode == "SUB"  ||
+					 opcode == "TIX" ) {
+					give_label(operand);
+					mark_code_data(p,hex2int(operand),WORD_DATA);
+				}
+
+				if ( opcode == "LDCH" ||
+					 opcode == "STCH" ) {
+					give_label(operand);
+					mark_code_data(p,hex2int(operand),CHAR_DATA);
+				}
+
+				if ( opcode == "J"    ||
+					 opcode == "JEQ"  ||
+					 opcode == "JGT"  ||
+					 opcode == "JLT"  ||
+					 opcode == "JSUB" ||
+					 opcode == "RSUB" ) {
+					give_label(operand);
+					mark_code_data(p,hex2int(operand),CODE);
+				}
+
+				if ( opcode != "J" ) {
+					mark_code_data(p,location+3,btg);
+				}
+
 				break;
 			}
 	}
