@@ -52,6 +52,7 @@ bool disassemble(ifstream &ifile, ofstream &ofile) {
 	status("Done analyzing program for code and data");
 	write_assembly(p, ofile);
 	status("Done writing output file");
+	return true;
 }
 
 string read_columns(ifstream &ifile, int col_begin, int col_end, char record_type = 'a') { // inclusive of both
