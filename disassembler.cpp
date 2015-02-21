@@ -2,6 +2,9 @@
 #include "util.h"
 #include "symtab.h"
 
+#include <vector>
+#include <cctype>
+
 using namespace std;
 
 enum ByteTypeGuess {
@@ -338,11 +341,48 @@ void write_assembly(const program &p, ofstream &ofile) {
 					errstr += int2hex(locctr);
 					error(errstr);
 				}
-			}
+			} // TODO: Refactor to prevent rewrite of code
 
 			ofile << asm_to_line(label,opcode,operand,is_indexed);
 
 			locctr += 3;
+		} else if ( p.byte_type_guess[locctr] == CHAR_DATA ) {
+			string label;
+			if ( p.is_labelled[locctr] ) {
+				if ( !find_from_symtab(label,int2hex(locctr)) ) {
+					string errstr;
+					errstr += "Label not created for location ";
+					errstr += int2hex(locctr);
+					error(errstr);
+				}
+			} // TODO: Refactor to prevent rewrite of code
+
+			vector<char> byte_list;
+			bool type_c = true;
+			do {
+				byte_list.push_back(p.memory[locctr]);
+				if ( !isprint(p.memory[locctr]) ) {
+					type_c = false;
+				}
+				locctr++;
+			} while ( p.byte_type_guess[locctr] == CHAR_DATA && !p.is_labelled[locctr] );
+
+			string opcode = "CHAR";
+			bool is_indexed = false;
+			string operand = "";
+
+			operand += (type_c?"C":"X");
+			operand += "'";
+			for ( int i = 0 ; i < (int)byte_list.size() ; i++ ) {
+				if ( type_c ) {
+					operand += byte_list[i];
+				} else {
+					operand += byte2hex(byte_list[i]);
+				}
+			}
+			operand += "'";
+
+			ofile << asm_to_line(label,opcode,operand,is_indexed); // TODO: Refactor
 		} else {
 			// TODO
 			locctr++; // temporarily
