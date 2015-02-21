@@ -3,10 +3,12 @@
 
 using namespace std;
 
+enum ByteTypeGuess {
+	UNINITIALIZED, UNKNOWN, CHAR_DATA, WORD_DATA, CODE
+};
+
 struct program {
-	enum ByteTypeGuess {
-		UNKNOWN, CHAR_DATA, WORD_DATA, CODE
-	} byte_type_guess[65536];
+	ByteTypeGuess byte_type_guess[65536];
 	char memory[65536];
 
 	string name;
@@ -15,7 +17,7 @@ struct program {
 	string first_executable_instruction;
 	program() {
 		for ( int i = 0 ; i < 65536 ; i++ ) {
-			byte_type_guess[i] = UNKNOWN;
+			byte_type_guess[i] = UNINITIALIZED;
 			memory[i] = 0;
 		}
 		name = "";
@@ -27,6 +29,7 @@ struct program {
 
 bool read_record(ifstream &ifile, string &record);
 void record_to_memory(const string record, program &p);
+void analyze_code_data(program &p);
 void write_assembly(const program &p, ofstream &ofile);
 
 bool disassemble(ifstream &ifile, ofstream &ofile) {
@@ -36,6 +39,8 @@ bool disassemble(ifstream &ifile, ofstream &ofile) {
 		record_to_memory(record, p);
 	}
 	status("Done reading records");
+	analyze_code_data(p);
+	status("Done analyzing program for code and data");
 	write_assembly(p, ofile);
 	status("Done writing output file");
 }
@@ -106,6 +111,7 @@ void record_to_memory(const string record, program &p) {
 				int bit_length = hex2int(record.substr(7,2));
 				for ( int i = 0 ; i < bit_length ; i++ ) {
 					p.memory[i+text_start] = hex2int(record.substr(9+2*i,2));
+					p.byte_type_guess[i+text_start] = UNKNOWN;
 				}
 			}
 			break;
@@ -118,6 +124,16 @@ void record_to_memory(const string record, program &p) {
 		default:
 			fatal("Unknown record type " + *c_record);
 	}
+}
+
+void analyze_code_data(program &p) {
+	if ( p.name.length() == 0 ) {
+		fatal("No Header record");
+	}
+	if ( p.first_executable_instruction.length() == 0 ) {
+		fatal("No End record");
+	}
+	// TODO
 }
 
 void write_assembly(const program &p, ofstream &ofile) {
