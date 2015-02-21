@@ -16,6 +16,7 @@ enum ByteTypeGuess {
 struct program {
 	ByteTypeGuess byte_type_guess[65536];
 	char memory[65536];
+	bool is_labelled[65536];
 
 	string name;
 	string starting_address;
@@ -25,6 +26,7 @@ struct program {
 		for ( int i = 0 ; i < 65536 ; i++ ) {
 			byte_type_guess[i] = UNINITIALIZED;
 			memory[i] = 0;
+			is_labelled[i] = false;
 		}
 		name = "";
 		starting_address = "";
