@@ -30,7 +30,6 @@ void fatal(string err, int code) {
 bool is_hex_digit(char c) {
 	return
 		(c >= 'A' && c <= 'F') ||
-		(c >= 'a' && c <= 'f') ||
 		(c >= '0' && c <= '9');
 }
 
@@ -54,8 +53,6 @@ int hexchar2int(char c) {
 	int ret = -1;
 	if ( c >= '0' && c <= '9' ) {
 		ret = (c-'0');
-	} else if ( c >= 'a' && c <= 'f' ) {
-		ret = (c-'a')+10;
 	} else if ( c >= 'A' && c <= 'F' ) {
 		ret = (c-'A')+10;
 	}
