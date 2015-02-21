@@ -302,9 +302,14 @@ void write_assembly(const program &p, ofstream &ofile) {
 	ofile << asm_to_line(p.name,"START",p.starting_address,false);
 	int start_of_program = hex2int(p.starting_address);
 	int end_of_program = start_of_program + p.length_of_program;
+
 	for ( int locctr = start_of_program ; locctr < end_of_program ; ) {
+		string label = "";
+		string opcode = "";
+		string operand = "";
+		bool is_indexed = false;
+
 		if ( p.byte_type_guess[locctr] == CODE ) {
-			string opcode;
 			if ( ! find_from_symtab(opcode,byte2hex(p.memory[locctr])) ) {
 				string errstr;
 				errstr += "Unknown opcode ";
@@ -313,8 +318,8 @@ void write_assembly(const program &p, ofstream &ofile) {
 				errstr += int2hex(locctr);
 				fatal(errstr);
 			}
-			string operand = byte2hex(p.memory[locctr+1])+byte2hex(p.memory[locctr+2]);
-			bool is_indexed = (hex2int(operand)&0x8000);
+			operand = byte2hex(p.memory[locctr+1])+byte2hex(p.memory[locctr+2]);
+			is_indexed = (hex2int(operand)&0x8000);
 			operand = int2hex(hex2int(operand)&0x7FFF); // remove index flag
 
 			if ( opcode != "RD" &&
@@ -333,7 +338,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 				operand = "";
 			}
 
-			string label = "";
+			label = "";
 			if ( p.is_labelled[locctr] ) {
 				if ( !find_from_symtab(label,int2hex(locctr)) ) {
 					string errstr;
@@ -343,11 +348,8 @@ void write_assembly(const program &p, ofstream &ofile) {
 				}
 			} // TODO: Refactor to prevent rewrite of code
 
-			ofile << asm_to_line(label,opcode,operand,is_indexed);
-
 			locctr += 3;
 		} else if ( p.byte_type_guess[locctr] == CHAR_DATA ) {
-			string label;
 			if ( p.is_labelled[locctr] ) {
 				if ( !find_from_symtab(label,int2hex(locctr)) ) {
 					string errstr;
@@ -367,9 +369,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 				locctr++;
 			} while ( p.byte_type_guess[locctr] == CHAR_DATA && !p.is_labelled[locctr] );
 
-			string opcode = "CHAR";
-			bool is_indexed = false;
-			string operand = "";
+			opcode = "CHAR";
 
 			operand += (type_c?"C":"X");
 			operand += "'";
@@ -381,12 +381,11 @@ void write_assembly(const program &p, ofstream &ofile) {
 				}
 			}
 			operand += "'";
-
-			ofile << asm_to_line(label,opcode,operand,is_indexed); // TODO: Refactor
 		} else {
 			// TODO
 			locctr++; // temporarily
 		}
+		ofile << asm_to_line(label,opcode,operand,is_indexed);
 	}
 	ofile << asm_to_line("","END","FIRST",false);
 }
