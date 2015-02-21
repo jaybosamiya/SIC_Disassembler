@@ -4,22 +4,21 @@
 using namespace std;
 
 struct program {
-	char name[7];
 	enum ByteTypeGuess {
 		UNKNOWN, CHAR_DATA, WORD_DATA, CODE
 	} byte_type_guess[65536];
 	char memory[65536];
+
+	string name;
 	string starting_address;
 	int length_of_program;
 	string first_executable_instruction;
 	program() {
-		for ( int i = 0 ; i < 7 ; i++ ) {
-			name[i] = 0;
-		}
 		for ( int i = 0 ; i < 65536 ; i++ ) {
 			byte_type_guess[i] = UNKNOWN;
 			memory[i] = 0;
 		}
+		name = "";
 		starting_address = "";
 		length_of_program = 0;
 		first_executable_instruction = "";
@@ -91,7 +90,25 @@ bool read_record(ifstream &ifile, string &record) {
 }
 
 void record_to_memory(const string record, program &p) {
-	// TODO
+	const char * c_record = record.c_str();
+	switch (*c_record) {
+		case 'H': // Header
+			if ( p.name.length() != 0 ) {
+				fatal("Multiple H records");
+			}
+			p.name = record.substr(1,6);
+			p.starting_address = record.substr(7,6);
+			p.length_of_program = hex2int(record.substr(13,6));
+			break;
+		case 'T': // Text
+			//TODO
+			break;
+		case 'E': // End
+			//TODO
+			break;
+		default:
+			fatal("Unknown record type " + *c_record);
+	}
 }
 
 void write_assembly(const program &p, ofstream &ofile) {
