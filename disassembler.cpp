@@ -75,6 +75,7 @@ string read_columns(ifstream &ifile, int col_begin, int col_end, char record_typ
 string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record_type = 'a') { // inclusive of both
 	string ret;
 	ret = read_columns(ifile,col_begin,col_end,record_type);
+	make_upper_case(ret);
 	if ( !is_hex_string(ret) ) {
 		string errstr;
 		errstr += "Unexpected non-hexadecimal character found in ";
@@ -82,7 +83,6 @@ string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record
 		errstr += " record";
 		fatal(errstr);
 	}
-	make_upper_case(ret);
 	return ret;
 }
 
