@@ -19,7 +19,7 @@ enum ByteTypeGuess {
 
 struct program {
 	ByteTypeGuess byte_type_guess[65536];
-	char memory[65536];
+	unsigned char memory[65536];
 	bool is_labelled[65536];
 
 	string name;
