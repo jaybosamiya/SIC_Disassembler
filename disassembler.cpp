@@ -217,7 +217,8 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					mark_code_data(p,hex2int(operand),CODE);
 				}
 
-				if ( opcode != "J" ) {
+				if ( opcode != "J" &&
+					 opcode != "RSUB" ) {
 					mark_code_data(p,location+3,btg);
 				}
 
