@@ -309,6 +309,15 @@ void write_assembly(const program &p, ofstream &ofile) {
 		string operand = "";
 		bool is_indexed = false;
 
+		if ( p.is_labelled[locctr] ) {
+			if ( !find_from_symtab(label,int2hex(locctr)) ) {
+				string errstr;
+				errstr += "Label not created for location ";
+				errstr += int2hex(locctr);
+				error(errstr);
+			}
+		}
+
 		if ( p.byte_type_guess[locctr] == CODE ) {
 			if ( ! find_from_symtab(opcode,byte2hex(p.memory[locctr])) ) {
 				string errstr;
@@ -338,27 +347,8 @@ void write_assembly(const program &p, ofstream &ofile) {
 				operand = "";
 			}
 
-			label = "";
-			if ( p.is_labelled[locctr] ) {
-				if ( !find_from_symtab(label,int2hex(locctr)) ) {
-					string errstr;
-					errstr += "Label not created for location ";
-					errstr += int2hex(locctr);
-					error(errstr);
-				}
-			} // TODO: Refactor to prevent rewrite of code
-
 			locctr += 3;
 		} else if ( p.byte_type_guess[locctr] == CHAR_DATA ) {
-			if ( p.is_labelled[locctr] ) {
-				if ( !find_from_symtab(label,int2hex(locctr)) ) {
-					string errstr;
-					errstr += "Label not created for location ";
-					errstr += int2hex(locctr);
-					error(errstr);
-				}
-			} // TODO: Refactor to prevent rewrite of code
-
 			vector<char> byte_list;
 			bool type_c = true;
 			do {
