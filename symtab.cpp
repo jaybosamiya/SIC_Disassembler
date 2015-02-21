@@ -1,5 +1,6 @@
 #include "symtab.h"
 #include <map>
+#include <cstdio>
 
 using namespace std;
 
@@ -32,8 +33,9 @@ bool find_from_symtab(std::string &symbol, std::string value) {
 bool give_label(std::string &label, std::string location) {
 	if ( find_from_symtab(label,location) )
 		return true;
-	label = "label" + label_count;
-	label_count++;
+	char clabel[20];
+	sprintf(clabel,"label%d",label_count++);
+	label = clabel;
 	add_to_symtab(label,location);
 	return false;
 }
