@@ -82,6 +82,7 @@ string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record
 		errstr += " record";
 		fatal(errstr);
 	}
+	make_upper_case(ret);
 	return ret;
 }
 

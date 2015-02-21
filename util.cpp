@@ -42,6 +42,14 @@ bool is_hex_string(std::string s) {
 	return ret;
 }
 
+void make_upper_case(std::string &s) {
+	for ( string::iterator c = s.begin() ; c != s.end() ; c++ ) {
+		if ( *c >= 'A' && *c <= 'Z' ) {
+			*c = (*c - 'A') + 'a';
+		}
+	}
+}
+
 int hexchar2int(char c) {
 	int ret = -1;
 	if ( c >= '0' && c <= '9' ) {

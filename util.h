@@ -11,6 +11,7 @@ void fatal(std::string err, int code = -1);
 
 bool is_hex_digit(char c);
 bool is_hex_string(std::string s);
+void make_upper_case(std::string &s);
 int hexchar2int(char c);
 int hex2int(std::string s);
 std::string byte2hex(int c);
