@@ -356,7 +356,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 				label = "UNUSED"; // This should not happen in a well written code
 			}
 
-			vector<char> byte_list;
+			vector<unsigned char> byte_list;
 			bool type_c = true;
 			do {
 				byte_list.push_back(p.memory[locctr]);
