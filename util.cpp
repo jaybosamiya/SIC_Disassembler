@@ -69,6 +69,9 @@ string byte2hex(int c) {
 }
 
 string int2hex(int c, int bytes) {
+	if ( c < 0 ) {
+		return int2hex(c&0x7FFFFFFF,bytes);
+	}
 	if ( bytes <= 0 ) {
 		return "";
 	}
