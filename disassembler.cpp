@@ -148,6 +148,9 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 			}
 		case CODE:
 			{
+				if ( p.byte_type_guess[location] == UNINITIALIZED ) {
+					fatal("Attempting to use uninitialized section as code");
+				}
 				p.byte_type_guess[location+0] = btg;
 				p.byte_type_guess[location+1] = btg;
 				p.byte_type_guess[location+2] = btg;
