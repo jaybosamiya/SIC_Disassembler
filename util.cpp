@@ -79,8 +79,8 @@ string byte2hex(int c) {
 	if ( c < 0 || c >= 256 ) {
 		fatal("Illegal value for byte");
 	}
-	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
-	ret += (c%16 <= 10)?('0'+c%16):('A'+c%16-10);
+	ret += (c/16 < 10)?('0'+c/16):('A'+c/16-10);
+	ret += (c%16 < 10)?('0'+c%16):('A'+c%16-10);
 	return ret;
 }
 
