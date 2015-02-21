@@ -333,10 +333,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 			is_indexed = (hex2int(operand)&0x8000);
 			operand = int2hex(hex2int(operand)&0x7FFF); // remove index flag
 
-			if ( opcode != "RD" &&
-				 opcode != "TD" &&
-				 opcode != "WD" &&
-				 opcode != "RSUB" ) {
+			if ( opcode != "RSUB" ) {
 				if ( !find_from_symtab(operand,operand) ) {
 					string errstr;
 					errstr += "Label not created for operand ";
