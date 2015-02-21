@@ -110,7 +110,10 @@ void record_to_memory(const string record, program &p) {
 			}
 			break;
 		case 'E': // End
-			//TODO
+			if ( p.first_executable_instruction.length() != 0 ) {
+				fatal("Multiple E records");
+			}
+			p.first_executable_instruction = record.substr(1,6);
 			break;
 		default:
 			fatal("Unknown record type " + *c_record);
