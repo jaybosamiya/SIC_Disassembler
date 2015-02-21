@@ -62,7 +62,7 @@ int hex2int(string s) {
 		if ( is_hex_digit(c) ) {
 			ret += hexchar2int(c);
 		} else {
-			fatal("Hex values need to be 0-9 or a-f");
+			fatal("Hex values need to be 0-9 or A-F");
 		}
 	}
 	return ret;
@@ -71,7 +71,7 @@ int hex2int(string s) {
 string byte2hex(int c) {
 	string ret = "";
 	if ( c < 0 || c >= 256 ) {
-		fatal("Illegal value for a byte");
+		fatal("Illegal value for byte");
 	}
 	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
 	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
