@@ -60,8 +60,12 @@ string read_columns(ifstream &ifile, int col_begin, int col_end, char record_typ
 	char t;
 	for ( int col = col_begin ; col <= col_end ; col++ ) {
 		t = ifile.get();
-		if ( t == EOF ) {
-			fatal("Unexpected end of " + record_type + string(" record"));
+		if ( t == EOF || t == '\n' ) {
+			string errstr;
+			errstr += "Unexpected end of ";
+			errstr += record_type;
+			errstr += " record";
+			fatal(errstr);
 		}
 		ret += t;
 	}
@@ -72,7 +76,11 @@ string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record
 	string ret;
 	ret = read_columns(ifile,col_begin,col_end,record_type);
 	if ( !is_hex_string(ret) ) {
-		fatal("Unexpected non-hexadecimal character found in "+record_type+string(" record"));
+		string errstr;
+		errstr += "Unexpected non-hexadecimal character found in ";
+		errstr += record_type;
+		errstr += " record";
+		fatal(errstr);
 	}
 	return ret;
 }
@@ -107,7 +115,11 @@ bool read_record(ifstream &ifile, string &record) {
 			record += read_hex_columns(ifile,2,7,'E');
 			break;
 		default:
-			fatal("Unknown record type " + t);
+			{
+				string errstr = "Unknown record type ";
+				errstr += t;
+				fatal(errstr);
+			}
 	}
 	return true;
 }
@@ -140,7 +152,12 @@ void record_to_memory(const string record, program &p) {
 			p.first_executable_instruction = record.substr(1,6);
 			break;
 		default:
-			fatal("Unknown record type " + *c_record);
+			{
+				string errstr;
+				errstr += "Unknown record type ";
+				errstr += *c_record;
+				fatal(errstr);
+			}
 	}
 }
 
@@ -187,7 +204,12 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				string operand = byte2hex(p.memory[location+1])+byte2hex(p.memory[location+2]);
 				operand = int2hex(hex2int(operand)&0x7FFF); // remove index flag
 				if ( ! find_from_symtab(opcode,opcode_val) ) {
-					fatal("Unknown opcode " + opcode_val + " at location " + int2hex(location));
+					string errstr;
+					errstr += "Unknown opcode ";
+					errstr += opcode_val;
+					errstr += " at location ";
+					errstr += int2hex(location);
+					fatal(errstr);
 				}
 
 				if ( opcode == "ADD"  ||
