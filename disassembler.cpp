@@ -244,7 +244,10 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				}
 
 				if ( opcode == "LDCH" ||
-					 opcode == "STCH" ) {
+					 opcode == "STCH" ||
+					 opcode == "RD"   ||
+					 opcode == "TD"   ||
+					 opcode == "WD" ) {
 					give_label(operand);
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),CHAR_DATA);
