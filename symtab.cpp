@@ -38,7 +38,7 @@ bool find_or_create_label(std::string &label, std::string location) {
 	return false;
 }
 
-void initialize() {
+void initialize_symtab() {
 	symtab.clear();
 	revsymtab.clear();
 	label_count = 0;
