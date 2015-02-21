@@ -254,8 +254,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					 opcode == "JEQ"  ||
 					 opcode == "JGT"  ||
 					 opcode == "JLT"  ||
-					 opcode == "JSUB" ||
-					 opcode == "RSUB" ) {
+					 opcode == "JSUB" ) {
 					give_label(operand);
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),CODE);
