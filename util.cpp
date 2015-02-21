@@ -34,6 +34,14 @@ bool is_hex_digit(char c) {
 		(c >= '0' && c <= '9');
 }
 
+bool is_hex_string(std::string s) {
+	bool ret = true;
+	for ( const char *c = s.c_str(); *c && ret ; c++ ) {
+		ret = ret && is_hex_digit(*c);
+	}
+	return ret;
+}
+
 int hexchar2int(char c) {
 	int ret = -1;
 	if ( c >= '0' && c <= '9' ) {

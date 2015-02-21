@@ -70,23 +70,12 @@ string read_columns(ifstream &ifile, int col_begin, int col_end, char record_typ
 
 string read_hex_columns(ifstream &ifile, int col_begin, int col_end, char record_type = 'a') { // inclusive of both
 	string ret;
-	char t;
-	for ( int col = col_begin ; col <= col_end ; col++ ) {
-		t = ifile.get();
-		if ( t == EOF ) {
-			fatal("Unexpected end of " + record_type + string(" record"));
-		} else if ( !is_hex_digit(t) ) {
-			string errorstr = "Unexpected character ";
-			errorstr += t;
-			errorstr += " in ";
-			errorstr += record_type;
-			errorstr += " record.";
-			fatal(errorstr);
-		}
-		ret += t;
+	ret = read_columns(ifile,col_begin,col_end,record_type);
+	if ( !is_hex_string(ret) ) {
+		fatal("Unexpected non-hexadecimal character found in "+record_type+string(" record"));
 	}
 	return ret;
-} // TODO: Refactor this to prevent code repetition with read_columns()
+}
 
 bool read_record(ifstream &ifile, string &record) {
 	int temp_int;
