@@ -68,10 +68,9 @@ string byte2hex(int c) {
 	ret += (c/16 <= 10)?('0'+c/16):('A'+c/16-10);
 }
 
-string int2hex(int c, bool blankzero) {
-	if ( c == 0 ) {
-		return (blankzero?"":"0");
-	} else {
-		return int2hex(c/256,true)+byte2hex(c%256);
+string int2hex(int c, int bytes) {
+	if ( bytes <= 0 ) {
+		return "";
 	}
+	return int2hex(c/256,bytes-1)+byte2hex(c%256);
 }
