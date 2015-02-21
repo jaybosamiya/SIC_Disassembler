@@ -371,6 +371,14 @@ void write_assembly(const program &p, ofstream &ofile) {
 				}
 			}
 			operand += "'";
+		} else if ( p.byte_type_guess[locctr] == WORD_DATA ) {
+			opcode = "WORD";
+			operand = int2str(
+					p.memory[locctr+0]*256*256+
+					p.memory[locctr+1]*256+
+					p.memory[locctr+2]
+				);
+			locctr += 3;
 		} else {
 			// TODO
 			locctr++; // temporarily
