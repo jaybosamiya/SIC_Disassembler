@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <cstdio>
 #include "util.h"
 
 using namespace std;
@@ -91,4 +92,10 @@ string int2hex(int c, int bytes) {
 		return "";
 	}
 	return int2hex(c/256,bytes-1)+byte2hex(c%256);
+}
+
+std::string int2str(int c) {
+	char ret[20];
+	sprintf(ret,"%d",c);
+	return ret;
 }

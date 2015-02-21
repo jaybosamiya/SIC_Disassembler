@@ -17,4 +17,6 @@ int hex2int(std::string s);
 std::string byte2hex(int c);
 std::string int2hex(int c, int bytes = 3);
 
+std::string int2str(int c);
+
 #endif
