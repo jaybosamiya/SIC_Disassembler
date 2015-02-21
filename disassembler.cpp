@@ -143,12 +143,16 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 		case CHAR_DATA:
 		case UNINITIALIZED_CHAR_DATA:
 			{
+				if ( p.byte_type_guess[location] == UNINITIALIZED )
+					btg = UNINITIALIZED_CHAR_DATA;
 				p.byte_type_guess[location] = btg;
 				break;
 			}
 		case WORD_DATA:
 		case UNINITIALIZED_WORD_DATA:
 			{
+				if ( p.byte_type_guess[location] == UNINITIALIZED )
+					btg = UNINITIALIZED_WORD_DATA;
 				p.byte_type_guess[location+0] = btg;
 				p.byte_type_guess[location+1] = btg;
 				p.byte_type_guess[location+2] = btg;
