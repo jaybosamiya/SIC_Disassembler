@@ -328,6 +328,9 @@ void write_assembly(const program &p, ofstream &ofile) {
 	while ( *start_address == '0' ) {
 		start_address++;
 	}
+  if ( show_addresses ) {
+    ofile << "      ";
+  }
 	ofile << asm_to_line(p.name,"START",string(start_address),false);
 	ofile << '\n';
 	int start_of_program = hex2int(p.starting_address);
@@ -338,6 +341,8 @@ void write_assembly(const program &p, ofstream &ofile) {
 		string opcode = "";
 		string operand = "";
 		bool is_indexed = false;
+
+    int orig_locctr = locctr;
 
 		if ( p.is_labelled[locctr] ) {
 			if ( !find_from_symtab(label,int2hex(locctr)) ) {
@@ -447,10 +452,16 @@ void write_assembly(const program &p, ofstream &ofile) {
 		}
 		if ( label.substr(0,4) == "SUBR" )
 			ofile << '\n';
+    if ( show_addresses ) {
+      ofile << int2hex(orig_locctr,2) << "  ";
+    }
 		ofile << asm_to_line(label,opcode,operand,is_indexed);
 		if ( opcode == "RSUB" || opcode == "J" )
 			ofile << '\n';
 	}
 	ofile << '\n';
+  if ( show_addresses ) {
+    ofile << "      ";
+  }
 	ofile << asm_to_line("","END","FIRST",false);
 }

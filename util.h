@@ -3,6 +3,8 @@
 
 #include <string>
 
+extern bool show_addresses;
+
 void status(std::string message);
 void header();
 void usage(std::string progname);

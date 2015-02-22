@@ -5,6 +5,8 @@
 
 using namespace std;
 
+bool show_addresses;
+
 void status(string message) {
   cout << "[+] " << message << "\n";
 }

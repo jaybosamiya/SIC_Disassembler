@@ -5,7 +5,7 @@
 using namespace std;
 
 int main(int argc, char ** argv) {
-	if ( argc != 3 ) {
+	if ( argc < 3 ) {
 		usage(argv[0]);
 	}
 
@@ -22,6 +22,12 @@ int main(int argc, char ** argv) {
 	}
 
   status("Opened files");
+
+  if ( argc == 4 ) {
+    show_addresses = (argv[3][0] == '-' && argv[3][1] == 'a');
+  } else {
+    show_addresses = false;
+  }
 
 	if ( !disassemble(ifile,ofile) ) {
 	  fatal("Error in disassembly.");
