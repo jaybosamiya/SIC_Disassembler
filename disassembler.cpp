@@ -249,7 +249,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					 opcode == "RD"   ||
 					 opcode == "TD"   ||
 					 opcode == "WD" ) {
-					give_label(operand,"VARC");
+					give_label(operand,"VARB");
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),CHAR_DATA);
 				}
