@@ -17,7 +17,9 @@ void header() {
 }
 
 void usage(string progname) {
-  cerr << "Usage: " << progname << " input_object_file output_assembly_file\n";
+  cerr << "Usage: " << progname << " input_object_file output_assembly_file [-a]\n";
+  cerr << "  Options:\n";
+  cerr << "    -a   Show addresses in assembly output\n";
   exit(-2);
 }
 
