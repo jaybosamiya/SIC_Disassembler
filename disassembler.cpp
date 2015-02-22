@@ -393,7 +393,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 				    || p.byte_type_guess[locctr] == UNKNOWN)
 			        && !p.is_labelled[locctr] );
 
-			opcode = "CHAR";
+			opcode = "BYTE";
 
 			operand += (type_c?"C":"X");
 			operand += "'";
