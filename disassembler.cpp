@@ -195,6 +195,12 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				}
 				if ( p.byte_type_guess[location] == UNINITIALIZED )
 					btg = UNINITIALIZED_WORD_DATA;
+				else if ( isprint(p.memory[location+0])
+					   && isprint(p.memory[location+1])
+					   && isprint(p.memory[location+2]) ) {
+					mark_code_data(p,location,CHAR_DATA);
+					break;
+				}
 				p.byte_type_guess[location+0] = btg;
 				p.byte_type_guess[location+1] = btg;
 				p.byte_type_guess[location+2] = btg;
