@@ -301,7 +301,11 @@ string asm_to_line(string label, string opcode, string operand, bool is_indexed)
 }
 
 void write_assembly(const program &p, ofstream &ofile) {
-	ofile << asm_to_line(p.name,"START",p.starting_address,false);
+	const char * start_address = p.starting_address.c_str();
+	while ( *start_address == '0' ) {
+		start_address++;
+	}
+	ofile << asm_to_line(p.name,"START",string(start_address),false);
 	int start_of_program = hex2int(p.starting_address);
 	int end_of_program = start_of_program + p.length_of_program;
 
