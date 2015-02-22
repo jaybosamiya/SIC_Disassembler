@@ -323,6 +323,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 		start_address++;
 	}
 	ofile << asm_to_line(p.name,"START",string(start_address),false);
+	ofile << '\n';
 	int start_of_program = hex2int(p.starting_address);
 	int end_of_program = start_of_program + p.length_of_program;
 
@@ -439,8 +440,9 @@ void write_assembly(const program &p, ofstream &ofile) {
 		if ( label.substr(0,4) == "SUBR" )
 			ofile << '\n';
 		ofile << asm_to_line(label,opcode,operand,is_indexed);
-		if ( opcode == "RSUB" )
+		if ( opcode == "RSUB" || opcode == "J" )
 			ofile << '\n';
 	}
+	ofile << '\n';
 	ofile << asm_to_line("","END","FIRST",false);
 }
