@@ -18,14 +18,10 @@ enum ByteTypeGuess {
 	CODE,
 };
 
-const int READ = 1;
-const int WRITE = 2;
-
 struct program {
 	ByteTypeGuess byte_type_guess[65536];
 	unsigned char memory[65536];
 	bool is_labelled[65536];
-	int read_write[65536];
 
 	string name;
 	string starting_address;
@@ -36,7 +32,6 @@ struct program {
 			byte_type_guess[i] = UNINITIALIZED;
 			memory[i] = 0;
 			is_labelled[i] = false;
-			read_write[i] = 0;
 		}
 		name = "";
 		starting_address = "";
@@ -241,18 +236,16 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					 opcode == "OR"   ||
 					 opcode == "SUB"  ||
 					 opcode == "TIX" ) {
-					give_label(operand,"CONSTW"); // TODO Change this to allow changing to VAR
+					mark_as_readable_data(operand);
 					p.is_labelled[hex2int(operand)] = true;
-					p.read_write[hex2int(operand)] |= READ;
 					mark_code_data(p,hex2int(operand),WORD_DATA);
 				}
 
 				if ( opcode == "STA"  ||
 					 opcode == "STL"  ||
 					 opcode == "STX" ) {
-					give_label(operand,"VARW");
+					mark_as_writable_data(operand);
 					p.is_labelled[hex2int(operand)] = true;
-					p.read_write[hex2int(operand)] |= WRITE;
 					mark_code_data(p,hex2int(operand),WORD_DATA);
 				}
 
@@ -260,16 +253,14 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					 opcode == "RD"   ||
 					 opcode == "TD"   ||
 					 opcode == "WD" ) {
-					give_label(operand,"CONSTB"); // TODO Change this to allow changing to VAR
+					mark_as_readable_data(operand);
 					p.is_labelled[hex2int(operand)] = true;
-					p.read_write[hex2int(operand)] |= READ;
 					mark_code_data(p,hex2int(operand),CHAR_DATA);
 				}
 
 				if ( opcode == "STCH" ) {
-					give_label(operand,"VARB");
+					mark_as_writable_data(operand);
 					p.is_labelled[hex2int(operand)] = true;
-					p.read_write[hex2int(operand)] |= WRITE;
 					mark_code_data(p,hex2int(operand),CHAR_DATA);
 				}
 
