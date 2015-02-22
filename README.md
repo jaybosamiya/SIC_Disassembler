@@ -28,7 +28,11 @@ Usage Syntax
 
 Running `./sic-disassemble` without any parameters shows the usage
 
-`Usage: ./sic-disassemble input_object_file output_assembly_file`
+```
+Usage: ./sic-disassemble input_object_file output_assembly_file [-a]
+  Options:
+    -a   Show addresses in assembly output
+```
 
 Legal
 -----
