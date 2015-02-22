@@ -254,6 +254,11 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					mark_code_data(p,hex2int(operand),CHAR_DATA);
 				}
 
+				if ( opcode != "J" &&
+					 opcode != "RSUB" ) {
+					mark_code_data(p,location+3,btg);
+				}
+
 				if ( opcode == "J"    ||
 					 opcode == "JEQ"  ||
 					 opcode == "JGT"  ||
@@ -262,11 +267,6 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					give_label(operand,"INS");
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),CODE);
-				}
-
-				if ( opcode != "J" &&
-					 opcode != "RSUB" ) {
-					mark_code_data(p,location+3,btg);
 				}
 
 				break;
