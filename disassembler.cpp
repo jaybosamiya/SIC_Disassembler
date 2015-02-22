@@ -272,9 +272,14 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				if ( opcode == "J"    ||
 					 opcode == "JEQ"  ||
 					 opcode == "JGT"  ||
-					 opcode == "JLT"  ||
-					 opcode == "JSUB" ) {
+					 opcode == "JLT" ) {
 					give_label(operand,"INS");
+					p.is_labelled[hex2int(operand)] = true;
+					mark_code_data(p,hex2int(operand),CODE);
+				}
+
+				if ( opcode == "JSUB" ) {
+					give_label(operand,"SUBR");
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),CODE);
 				}
@@ -431,7 +436,11 @@ void write_assembly(const program &p, ofstream &ofile) {
 		} else {
 			fatal("Reached part of decompiler that should not be reached");
 		}
+		if ( label.substr(0,4) == "SUBR" )
+			ofile << '\n';
 		ofile << asm_to_line(label,opcode,operand,is_indexed);
+		if ( opcode == "RSUB" )
+			ofile << '\n';
 	}
 	ofile << asm_to_line("","END","FIRST",false);
 }
