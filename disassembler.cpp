@@ -389,7 +389,9 @@ void write_assembly(const program &p, ofstream &ofile) {
 					type_c = false;
 				}
 				locctr++;
-			} while ( p.byte_type_guess[locctr] == CHAR_DATA && !p.is_labelled[locctr] );
+			} while ( (p.byte_type_guess[locctr] == CHAR_DATA
+				    || p.byte_type_guess[locctr] == UNKNOWN)
+			        && !p.is_labelled[locctr] );
 
 			opcode = "CHAR";
 
