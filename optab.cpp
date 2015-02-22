@@ -15,13 +15,6 @@ bool add_to_optab(std::string symbol, std::string value) {
 	return true;
 }
 
-bool read_from_optab(std::string symbol, std::string &value) {
-	if ( !optab.count(symbol) )
-		return false;
-	value = optab[symbol];
-	return true;
-}
-
 bool find_from_optab(std::string &symbol, std::string value) {
 	if ( !revoptab.count(value) )
 		return false;
@@ -58,4 +51,3 @@ void initialize_optab() {
 	add_to_optab("TIX" ,"2C");
 	add_to_optab("WD"  ,"DC");
 }
-
