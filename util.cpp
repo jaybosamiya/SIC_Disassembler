@@ -10,7 +10,7 @@ void status(string message) {
 }
 
 void header() {
-  cout << "SIC-Disassembler v1.0 by Jay Bosamiya\n"
+  cout << "SIC-Disassembler v1.1 by Jay Bosamiya\n"
           "-------------------------------------\n\n";
 }
 
