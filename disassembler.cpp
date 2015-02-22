@@ -1,6 +1,7 @@
 #include "disassembler.h"
 #include "util.h"
 #include "symtab.h"
+#include "optab.h"
 
 #include <vector>
 #include <cctype>
@@ -215,7 +216,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				string opcode;
 				string operand = byte2hex(p.memory[location+1])+byte2hex(p.memory[location+2]);
 				operand = int2hex(hex2int(operand)&0x7FFF); // remove index flag
-				if ( ! find_from_symtab(opcode,opcode_val) ) {
+				if ( ! find_from_optab(opcode,opcode_val) ) {
 					string errstr;
 					errstr += "Unknown opcode ";
 					errstr += opcode_val;
@@ -281,6 +282,7 @@ void analyze_code_data(program &p) {
 		fatal("No End record");
 	}
 	initialize_symtab();
+	initialize_optab();
 	add_to_symtab("FIRST",p.first_executable_instruction);
 	p.is_labelled[hex2int(p.first_executable_instruction)] = true;
 	mark_code_data(p,hex2int(p.first_executable_instruction),CODE);
@@ -325,7 +327,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 		}
 
 		if ( p.byte_type_guess[locctr] == CODE ) {
-			if ( ! find_from_symtab(opcode,byte2hex(p.memory[locctr])) ) {
+			if ( ! find_from_optab(opcode,byte2hex(p.memory[locctr])) ) {
 				string errstr;
 				errstr += "Unknown opcode ";
 				errstr += opcode;

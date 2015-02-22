@@ -47,31 +47,6 @@ void initialize_symtab() {
 	symtab.clear();
 	revsymtab.clear();
 	label_count = 0;
-	add_to_symtab("ADD" ,"18");
-	add_to_symtab("AND" ,"40");
-	add_to_symtab("COMP","28");
-	add_to_symtab("DIV" ,"24");
-	add_to_symtab("J"   ,"3C");
-	add_to_symtab("JEQ" ,"30");
-	add_to_symtab("JGT" ,"34");
-	add_to_symtab("JLT" ,"38");
-	add_to_symtab("JSUB","48");
-	add_to_symtab("LDA" ,"00");
-	add_to_symtab("LDCH","50");
-	add_to_symtab("LDL" ,"08");
-	add_to_symtab("LDX" ,"04");
-	add_to_symtab("MUL" ,"20");
-	add_to_symtab("OR"  ,"44");
-	add_to_symtab("RD"  ,"D8");
-	add_to_symtab("RSUB","4C");
-	add_to_symtab("STA" ,"0C");
-	add_to_symtab("STCH","54");
-	add_to_symtab("STL" ,"14");
-	add_to_symtab("STX" ,"10");
-	add_to_symtab("SUB" ,"1C");
-	add_to_symtab("TD"  ,"E0");
-	add_to_symtab("TIX" ,"2C");
-	add_to_symtab("WD"  ,"DC");
 }
 
 bool are_same_in_symtab(std::string symbol, std::string value) {
