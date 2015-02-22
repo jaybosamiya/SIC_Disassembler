@@ -239,7 +239,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					 opcode == "STX"  ||
 					 opcode == "SUB"  ||
 					 opcode == "TIX" ) {
-					give_label(operand);
+					give_label(operand,"VARW");
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),WORD_DATA);
 				}
@@ -249,7 +249,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					 opcode == "RD"   ||
 					 opcode == "TD"   ||
 					 opcode == "WD" ) {
-					give_label(operand);
+					give_label(operand,"VARC");
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),CHAR_DATA);
 				}
@@ -259,7 +259,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 					 opcode == "JGT"  ||
 					 opcode == "JLT"  ||
 					 opcode == "JSUB" ) {
-					give_label(operand);
+					give_label(operand,"INS");
 					p.is_labelled[hex2int(operand)] = true;
 					mark_code_data(p,hex2int(operand),CODE);
 				}

@@ -6,7 +6,7 @@ using namespace std;
 
 map<string,string> symtab;
 map<string,string> revsymtab;
-int label_count = 0;
+map<string,int> label_count;
 
 bool add_to_symtab(std::string symbol, std::string value) {
 	if ( symtab.count(symbol) )
@@ -23,11 +23,11 @@ bool find_from_symtab(std::string &symbol, std::string value) {
 	return true;
 }
 
-bool give_label(std::string location) {
+bool give_label(std::string location, std::string label_type) {
 	string label;
 	if ( find_from_symtab(label,location) )
 		return true;
-	label = "label" + int2str(label_count++);
+	label = label_type + int2str(label_count[label_type]++);
 	add_to_symtab(label,location);
 	return false;
 }
@@ -35,5 +35,5 @@ bool give_label(std::string location) {
 void initialize_symtab() {
 	symtab.clear();
 	revsymtab.clear();
-	label_count = 0;
+	label_count.clear();
 }
