@@ -328,6 +328,9 @@ void write_assembly(const program &p, ofstream &ofile) {
 	while ( *start_address == '0' ) {
 		start_address++;
 	}
+  if ( *start_address == '\0' ) {
+    start_address--;
+  }
   if ( show_addresses ) {
     ofile << "      ";
   }
