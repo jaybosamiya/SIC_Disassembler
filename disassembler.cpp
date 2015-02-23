@@ -446,7 +446,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 				    || p.byte_type_guess[locctr] == UNINITIALIZED)
 					&& !p.is_labelled[locctr]
 					&& locctr < end_of_program);
-			if ( locctr >= end_of_program ) {
+			if ( locctr > end_of_program ) {
 				buf_size--;
 			}
 			operand = int2str(buf_size);
