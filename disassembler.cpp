@@ -211,7 +211,7 @@ void mark_code_data(program &p, int location, ByteTypeGuess btg) {
 				if ( p.byte_type_guess[location] == UNINITIALIZED ) {
 					fatal("Attempting to use uninitialized section as code");
 				}
-				if ( p.byte_type_guess[location] == CODE ) {
+				if ( p.byte_type_guess[location] != UNKNOWN ) {
 					break;
 				}
 				p.byte_type_guess[location+0] = btg;
@@ -432,7 +432,7 @@ void write_assembly(const program &p, ofstream &ofile) {
 				    || p.byte_type_guess[locctr] == UNINITIALIZED)
 			        && !p.is_labelled[locctr]
 			        && locctr < end_of_program);
-			if ( locctr >= end_of_program ) {
+			if ( locctr > end_of_program ) {
 				buf_size--;
 			}
 			operand = int2str(buf_size);
