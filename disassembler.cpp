@@ -415,11 +415,17 @@ void write_assembly(const program &p, ofstream &ofile) {
 			operand += "'";
 		} else if ( p.byte_type_guess[locctr] == WORD_DATA ) {
 			opcode = "WORD";
-			operand = int2str(
-					p.memory[locctr+0]*256*256+
-					p.memory[locctr+1]*256+
-					p.memory[locctr+2]
-				);
+			int num;
+			bool is_negative = false;
+			if ( (p.memory[locctr+0] >> 7) & 1 ) {
+				is_negative = true;
+			}
+			num = (p.memory[locctr+0]&127)*256*256;
+			num += p.memory[locctr+1]*256 + p.memory[locctr+2];
+			if ( is_negative ) {
+				num -= 8388608;
+			}
+			operand = int2str( num );
 			locctr += 3;
 		} else if ( p.byte_type_guess[locctr] == UNINITIALIZED_CHAR_DATA ||
 		            p.byte_type_guess[locctr] == UNINITIALIZED ) {
